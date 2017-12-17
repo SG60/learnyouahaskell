@@ -75,8 +75,7 @@ head' :: [a] -> a
 head' [] = error "Can't call head on an empty list, dummy!"
 head' (x:_) = x
 
-tell :: (Show a)
-     => [a] -> String
+tell :: (Show a) => [a] -> String
 tell [] = "The list is empty"
 tell (x:[]) = "The list has one element: " ++ show x
 tell (x:y:[]) = "The list has two elements: " ++ show x ++ " and " ++ show y
@@ -84,8 +83,7 @@ tell (x:y:_) =
   "The list is long. The first two elements are: " ++
   show x ++ " and " ++ show y
 
-length' :: (Num b)
-        => [a] -> b
+length' :: (Num b) => [a] -> b
 length' [] = 0
 length' (_:xs) = 1 + length' xs
 
@@ -113,8 +111,7 @@ max' a b
   | a > b = a
   | otherwise = b
 
-myCompare :: (Ord a)
-          => a -> a -> Ordering
+myCompare :: (Ord a) => a -> a -> Ordering
 a `myCompare` b
   | a > b = GT
   | a == b = EQ
@@ -128,13 +125,11 @@ initials firstname lastname = [f] ++ "." ++ [l] ++ "."
 initials' :: String -> String -> String
 initials' (f:_) (l:_) = [f] ++ "." ++ [l] ++ "."
 
-calcBmis :: (RealFloat a)
-         => [(a,a)] -> [a]
+calcBmis :: (RealFloat a) => [(a, a)] -> [a]
 calcBmis xs = [bmi w h | (w,h) <- xs]
   where bmi w h = w / h ^ 2
 
-cylinder :: (RealFloat a)
-         => a -> a -> a
+cylinder :: (RealFloat a) => a -> a -> a
 cylinder r h =
   let sideArea = 2 * pi * r * h
       topArea = pi * r ^ 2
