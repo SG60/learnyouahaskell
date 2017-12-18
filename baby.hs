@@ -21,9 +21,7 @@ boomBangs xs =
 
 -- length' xs = sum [1 | _ <- xs]
 removeNonUppercase :: String -> String
-removeNonUppercase st =
-  [c | c <- st
-     , c `elem` ['A' .. 'Z']]
+removeNonUppercase st = [c | c <- st, c `elem` ['A' .. 'Z']]
 
 addThree :: Int -> Int -> Int -> Int
 addThree x y z = x + y + z
@@ -34,13 +32,11 @@ circumference r = 2 * pi * r
 circumference' :: Double -> Double
 circumference' r = 2 * pi * r
 
-lucky :: (Integral a)
-      => a -> String
+lucky :: (Integral a) => a -> String
 lucky 7 = "LUCKY NUMBER SEVEN!"
 lucky x = "Sorry, you're out of luck, pal!"
 
-sayMe :: (Integral a)
-      => a -> String
+sayMe :: (Integral a) => a -> String
 sayMe 1 = "One!"
 sayMe 2 = "Two!"
 sayMe 3 = "Three!"
@@ -48,8 +44,7 @@ sayMe 4 = "Four!"
 sayMe 5 = "Five!"
 sayMe x = "Not between 1 and 5"
 
-factorial :: (Integral a)
-          => a -> a
+factorial :: (Integral a) => a -> a
 factorial 0 = 1
 factorial n = n * factorial (n - 1)
 
@@ -58,8 +53,7 @@ charName 'a' = "Alexander"
 charName 'b' = "Bob"
 charName 'c' = "Corin"
 
-addVectors :: (Num a)
-           => (a,a) -> (a,a) -> (a,a)
+addVectors :: (Num a) => (a, a) -> (a, a) -> (a, a)
 addVectors (x1,y1) (x2,y2) = (x1 + x2,y1 + y2)
 
 first :: (a,b,c) -> a
@@ -105,8 +99,7 @@ bmiTell weight height
   | otherwise = "You're a whale, congratulations!"
   where bmi = weight / height ^ 2
 
-max' :: (Ord a)
-     => a -> a -> a
+max' :: (Ord a) => a -> a -> a
 max' a b
   | a > b = a
   | otherwise = b
@@ -125,12 +118,45 @@ initials firstname lastname = [f] ++ "." ++ [l] ++ "."
 initials' :: String -> String -> String
 initials' (f:_) (l:_) = [f] ++ "." ++ [l] ++ "."
 
-calcBmis :: (RealFloat a) => [(a, a)] -> [a]
-calcBmis xs = [bmi w h | (w,h) <- xs]
-  where bmi w h = w / h ^ 2
-
 cylinder :: (RealFloat a) => a -> a -> a
 cylinder r h =
   let sideArea = 2 * pi * r * h
       topArea = pi * r ^ 2
   in sideArea + 2 * topArea
+
+calcBmis :: (RealFloat a) => [(a, a)] -> [a]
+calcBmis xs = [bmi | (w, h) <- xs, let bmi = w / h ^ 2]
+
+calcBmisFat :: (RealFloat a) => [(a, a)] -> [a]
+calcBmisFat xs = [bmi | (w, h) <- xs, let bmi = w / h ^ 2, bmi >= 25.0]
+
+describeList :: [a] -> String
+describeList xs =
+  "The list is " ++
+  case xs of
+    [] -> "empty."
+    [x] -> "a singleton list."
+    xs -> "a longer list."
+
+describeList' :: [a] -> String
+describeList' xs = "The list is " ++ what xs
+  where
+    what [] = "empty."
+    what [x] = "a singleton list."
+    what xs = "a longer list."
+
+maximum' :: (Ord a) => [a] -> a
+maximum' [] = error "maximum of empty list"
+maximum' [x] = x
+maximum' (x:xs) = max x (maximum' xs)
+
+replicate' :: (Num i, Ord i) => i -> a -> [a]
+replicate' n x
+  | n <= 0 = []
+  | otherwise = x : replicate' (n - 1) x
+
+take' :: (Num i, Ord i) => i -> [a] -> [a]
+take' n _
+  | n <= 0 = []
+take' _ [] = []
+take' n (x:xs) = x : take' (n - 1) xs
