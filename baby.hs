@@ -4,20 +4,22 @@ doubleUs x y = doubleMe x + doubleMe y
 
 doubleSmallNumber x =
   if x > 100
-     then x
-     else x * 2
+    then x
+    else x * 2
 
 doubleSmallNumber' x =
   (if x > 100
-      then x
-      else x * 2) +
+     then x
+     else x * 2) +
   1
 
 boomBangs xs =
-  [if x < 10
-      then "BOOM!"
-      else "BANG!" | x <- xs
-                   , odd x]
+  [ if x < 10
+    then "BOOM!"
+    else "BANG!"
+  | x <- xs
+  , odd x
+  ]
 
 -- length' xs = sum [1 | _ <- xs]
 removeNonUppercase :: String -> String
@@ -80,11 +82,6 @@ tell (x:y:_) =
 length' :: (Num b) => [a] -> b
 length' [] = 0
 length' (_:xs) = 1 + length' xs
-
-sum' :: (Num a)
-     => [a] -> a
-sum' [] = 0
-sum' (x:xs) = x + sum' xs
 
 capital :: String -> String
 capital "" = "Empty string, whoops!"
@@ -160,3 +157,73 @@ take' n _
   | n <= 0 = []
 take' _ [] = []
 take' n (x:xs) = x : take' (n - 1) xs
+
+reverse' :: [a] -> [a]
+reverse' [] = []
+reverse' (x:xs) = reverse' xs ++ [x]
+
+repeat' :: a -> [a]
+repeat' x = x:repeat' x
+
+zip' :: [a] -> [b] -> [(a,b)]
+zip' _ [] = []
+zip' [] _ = []
+zip' (x:xs) (y:ys) = (x, y) : zip' xs ys
+
+elem' :: (Eq a) => a -> [a] -> Bool
+elem' a [] = False
+elem' a (x:xs)
+  | a == x = True
+  | otherwise = a `elem'` xs
+
+quicksort :: (Ord a) => [a] -> [a]
+quicksort [] = []
+quicksort (x:xs) =
+  let smallerSorted = quicksort (filter (<=x) xs)
+      biggerSorted = quicksort (filter (>x) xs)
+  in smallerSorted ++ [x] ++ biggerSorted
+
+zipWith' :: (a -> b -> c) -> [a] -> [b] -> [c]
+zipWith' _ [] _ = []
+zipWith' _ _ [] = []
+zipWith' f (x:xs) (y:ys) = f x y : zipWith' f xs ys
+
+flip' :: (a -> b -> c) -> (b -> a -> c)
+flip' f = \x y -> f y x
+
+-- largest number under 100000 divisible by 3829
+largestDivisible :: (Integral a) => a
+largestDivisible = head (filter p [100000,99999 ..])
+  where
+    p x = x `mod` 3829 == 0
+
+sumOddSquaresUnder10000 :: Integer
+sumOddSquaresUnder10000 =
+  sum (takeWhile (< 10000) (map (^ 2) (filter odd [1 ..])))
+
+-- Collatz sequence
+chain :: (Integral a) => a -> [a]
+chain 1 = [1]
+chain n
+  | even n = n : chain (n `div` 2)
+  | odd n = n : chain (n * 3 + 1)
+
+numLongChains :: Int
+numLongChains = length (filter (\xs -> length xs > 15) (map chain [1 .. 100]))
+
+sumFolded :: (Num a) => [a] -> a
+sumFolded = foldl (+) 0
+
+elemFolded :: (Eq a) => a -> [a] -> Bool
+elemFolded y ys = foldl (\acc x -> if x == y then True else acc) False ys
+
+map' :: (a -> b) -> [a] -> [b]
+map' f xs = foldr (\x acc -> f x : acc) [] xs
+
+sqrtSums = length (takeWhile (< 1000) (scanl1 (+) (map sqrt [1 ..]))) + 1
+
+sumOddSquaresUnder10000' :: Integer
+sumOddSquaresUnder10000' =
+  let oddSquares = map (^ 2) $ filter odd [1..]
+      belowLimit = takeWhile (< 10000)
+  in sum $ belowLimit oddSquares
