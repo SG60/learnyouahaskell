@@ -1,3 +1,5 @@
+import qualified Data.List as M
+
 doubleMe x = x + x
 
 doubleUs x y = doubleMe x + doubleMe y
@@ -227,3 +229,5 @@ sumOddSquaresUnder10000' =
   let oddSquares = map (^ 2) $ filter odd [1..]
       belowLimit = takeWhile (< 10000)
   in sum $ belowLimit oddSquares
+
+groupPositivity values = M.groupBy (\x y -> (x > 0) == (y > 0)) values
